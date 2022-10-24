@@ -16,10 +16,10 @@ app = dash.Dash()
 # Load data
 data = Single_Stage_Game(0, N, agents, past_games= None, threshold = 0.5, time_limit= None)
 
-# Definen layout 
+# Define layout 
 app.layout = html.Div([ 
   visdcc.Network(id = 'net', 
                  data = {'nodes': nodes, 'edges': edges},
                  options = dict(height = '600px', width = '100%')),
   dcc.RadioItems(id = 'color',
-                 options = [{'label': 'Red
+                 options = [{'label': 'Red;

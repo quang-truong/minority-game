@@ -5,7 +5,7 @@ class Single_Stage_Game:
         self.index = index
         self.N = N
         self.agents = agents
-        self.past_games = past_games
+        self.past_games = past_games            # a binary string
         self.threshold = threshold
         self.time_limit = time_limit
         self.final_result = None                # 'Bar' or 'Home'
@@ -15,12 +15,15 @@ class Single_Stage_Game:
         num_of_attendants = 0
         num_of_stay_home = 0
         for agent in self.agents:
-            decision = agent.make_decision()
+            decision = agent.make_decision(self.past_games)
             if (decision == 'Bar'): num_of_attendants += 1
             else: num_of_stay_home += 1
         if (self.threshold != None):                # El Farol threshold
             res = 'Bar' if num_of_attendants / (num_of_attendants + num_of_stay_home) < self.threshold else 'Home'
         else:
-            res = 'Bar' if num_of_attendants < (num_of_attendants + num_of_stay_home) else 'Home'
+            res = 'Bar' if num_of_attendants < num_of_stay_home else 'Home'
         self.final_result = (res, num_of_attendants, num_of_stay_home)
 
+    def update(self):
+        for agent in self.agents:
+            agent.update(self.final_result[0], self.past_games)

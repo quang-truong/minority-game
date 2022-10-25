@@ -22,4 +22,21 @@ app.layout = html.Div([
                  data = {'nodes': nodes, 'edges': edges},
                  options = dict(height = '600px', width = '100%')),
   dcc.RadioItems(id = 'color',
-                 options = [{'label': 'Red;
+                 options = [{'label': 'Red', 'value': '#ff0000'},
+                            {'label': 'Green', 'value': '#00ff00'},
+                            {'label': 'Blue', 'value': '#0000ff'}],
+                 value = 'Red')
+  
+  # Define callback 
+  app.callback(
+    Output('net', 'options'),
+    [Input('color', 'value')])
+  
+  def myfun(x):
+    return {'nodes': {'color': x}}
+  
+ # Define the main calling 
+  if __name__. = '__main__':
+    app.run_server(debug = True)
+  
+                             

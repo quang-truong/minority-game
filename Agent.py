@@ -2,7 +2,7 @@ import numpy as np
 
 from Strategies import random_strategy
 
-class Agent:
+class Agent():
     def __init__(self, index: int, past_decisions: str, brain_size = 4, num_strategies = 5):
         self.index = index
         self.past_decisions = past_decisions                        # (True or False, Win or Lose, Strategies used)

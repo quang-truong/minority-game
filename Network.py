@@ -4,7 +4,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from typing import List
 
-class Network:
+class Network():
     def __init__(self, agents: List[Agent], p: float, directed: bool, seed: int):
         self.agents = agents
         self.p = p

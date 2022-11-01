@@ -13,6 +13,11 @@ class Agent():
         self.best_strategy = self.strategies[np.argmax(self.virtual_point)]
         self.score = 0
 
+        # network attributes
+        self.neighbors = []
+        self.aggregated_strategies = None
+        self.aggregated_virtual_point = None
+
     def filter_signal(self, signal: str):
         return int(signal[-self.brain_size:], 2)
     
@@ -22,10 +27,12 @@ class Agent():
         return 'Bar' if decision else 'Home'
 
     def update(self, result: int, signal: str):
+        is_winner = False
         result = 1 if result == 'Bar' else 0
         filtered_signal = self.filter_signal(signal)
         if self.best_strategy[filtered_signal] == result:                       # Update Score based on Result
             self.score += 1
+            is_winner = True
         else:
             self.score -= 1
         for i in range(self.num_strategies):                                    # Calculate next best Strategy
@@ -34,3 +41,4 @@ class Agent():
             else:
                 self.virtual_point[i] -= 1
         self.best_strategy = self.strategies[np.argmax(self.virtual_point)]
+        return is_winner

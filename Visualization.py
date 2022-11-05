@@ -23,8 +23,7 @@ app.layout = html.Div([
                  options = dict(height = '600px', width = '100%')),
   dcc.RadioItems(id = 'color',
                  options = [{'label': 'Red', 'value': '#ff0000'},
-                            {'label': 'Green', 'value': '#00ff00'},
-                            {'label': 'Blue', 'value': '#0000ff'}],
+                            {'label': 'Green', 'value': '#00ff00'}],
                  value = 'Red')
   
   # Define callback 

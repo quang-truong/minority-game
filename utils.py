@@ -2,7 +2,7 @@ from time import time
 import numpy as np
 import matplotlib.pyplot as plt
 
-from Games import Traditional_Minority_Game, Network_Minority_Game
+from Games import Traditional_Minority_Game, Network_Minority_Game, Disconnected_Network_Minority_Game
 
 def plot_games_result(game: Traditional_Minority_Game, ylim_lower: int, ylim_upper: int):
     final_results = game.final_results
@@ -26,7 +26,7 @@ def plot_games_result(game: Traditional_Minority_Game, ylim_lower: int, ylim_upp
     ax.axhline(total_agents//2, linestyle='--', color='tab:orange')
     plt.show()
 
-def plot_network_games_result(game: Network_Minority_Game, ylim_lower: int, ylim_upper: int):
+def plot_network_games_result(game: Network_Minority_Game or Disconnected_Network_Minority_Game, ylim_lower: int, ylim_upper: int):
     final_results = game.final_results
     total_agent = game.N
 
@@ -78,6 +78,87 @@ def plot_coop_solo(game: Network_Minority_Game):
     ax.fill_between(game_index[:-9], solo_rolling_avg - solo_rolling_std, solo_rolling_avg + solo_rolling_std, color = "tab:blue", alpha = 0.2)
     ax.plot(game_index[:-9], coop_rolling_avg, color = "tab:orange", label = "coop")
     ax.fill_between(game_index[:-9], coop_rolling_avg - coop_rolling_std, coop_rolling_avg + coop_rolling_std, color = "tab:orange", alpha = 0.2)
+    ax.set_xlabel("Game")
+    ax.set_ylabel("Winning Ratio (# winners / # ppl in that category)")
+    for t in game.time_step:
+        ax.axvline(t, linestyle='--', color='tab:grey')
+    plt.legend()
+    plt.show()
+
+def plot_disconnected_groups(game: Disconnected_Network_Minority_Game):
+    game_index = []
+
+    winner_ratio = {
+        1: [],
+        10: [],
+        20: [],
+        30: [],
+        40: [],
+        50: [],
+        60: [],
+        70: [],
+        80: [],
+        90: []
+    }
+
+    windows = {
+        1: [],
+        10: [],
+        20: [],
+        30: [],
+        40: [],
+        50: [],
+        60: [],
+        70: [],
+        80: [],
+        90: []
+    }
+
+    rolling_avg = {
+        1: [],
+        10: [],
+        20: [],
+        30: [],
+        40: [],
+        50: [],
+        60: [],
+        70: [],
+        80: [],
+        90: []
+    }
+
+    rolling_std = {
+        1: [],
+        10: [],
+        20: [],
+        30: [],
+        40: [],
+        50: [],
+        60: [],
+        70: [],
+        80: [],
+        90: []
+    }
+
+    fig, ax = plt.subplots()
+    for k in winner_ratio.keys():
+        for t in range(game.T):
+            winner_ratio[k].append(game.num_winner_by_group[k][t]/k)
+    
+    for i in range(game.T):
+        game_index.append(i)
+    
+    game_index = np.array(game_index)
+    for k in winner_ratio.keys():
+        winner_ratio[k] = np.array(winner_ratio[k])
+        windows[k] = rolling_window(winner_ratio[k], 10)
+        rolling_avg[k] = np.average(windows[k], 1)
+        rolling_std[k] = np.std(windows[k], 1)
+    
+    for k in winner_ratio.keys():
+        ax.plot(game_index[:-9], rolling_avg[k], color = game.colors[k], label = str(k))
+        ax.fill_between(game_index[:-9], rolling_avg[k] - rolling_std[k], rolling_avg[k] + rolling_std[k], color = game.colors[k], alpha = 0.2)
+    
     ax.set_xlabel("Game")
     ax.set_ylabel("Winning Ratio (# winners / # ppl in that category)")
     for t in game.time_step:

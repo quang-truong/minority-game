@@ -12,8 +12,7 @@ def vary_brain_size(T: int, N: int, brain_size: int, num_strategies: int, seed: 
 
     game = Traditional_Minority_Game(T, N, agents, past_games = past_games, threshold = 0.5, time_limit= None)
     game.start()
-    games = game.get_final_results()
-    return games
+    return game
     
 def vary_network(T: int, N: int, brain_size: int, num_strategies: int, p: float, seed: int, directed: bool, time_step : List[int]):
     np.random.seed(seed)
@@ -26,5 +25,4 @@ def vary_network(T: int, N: int, brain_size: int, num_strategies: int, p: float,
                                 time_limit= None, seed = seed)
     game.network.plot_graph()
     game.start()
-    games = game.get_final_results()
-    return games
+    return game

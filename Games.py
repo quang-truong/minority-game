@@ -14,7 +14,7 @@ class Traditional_Minority_Game():
         self.past_games = past_games            # a binary string
         self.threshold = threshold
         self.time_limit = time_limit
-        self.final_results = []               
+        self.final_results = []                 # ('Bar' or 'Home', number of ppl go to Bar, number of ppl go to Home)
 
     def start(self):
         for t in range(self.T):
@@ -40,7 +40,7 @@ class Traditional_Minority_Game():
 
     def update(self, result: Tuple[str, int, int], t: int):
         for agent in self.agents:
-            agent.update(result[0], self.past_games)
+            _ = agent.update(result[0], self.past_games)
 
     def get_final_results(self): return self.final_results
 
@@ -65,7 +65,9 @@ class Network_Minority_Game(Traditional_Minority_Game):
             else:
                 self.num_solo_agent += 1
     
-    def update(self, result: Tuple[str, int, int], t: int):
+    def update(self, result: Tuple[str, int, int], t: int):         
+        # Similar to update() of parent, but need to keep track coop and solo
+        # as well as propagate strategies
         num_solo_winner = 0
         num_coop_winner = 0
         for agent in self.agents:
@@ -78,11 +80,12 @@ class Network_Minority_Game(Traditional_Minority_Game):
                     num_solo_winner += 1
         self.arr_num_solo_winner.append(num_solo_winner)
         self.arr_num_coop_winner.append(num_coop_winner)
-        if (t in self.time_step):
+        if (t in self.time_step):           # propagate strategies at pre-defined time steps
             self.propagate()
 
     
     def propagate(self):
+        # Temporary Aggregate Strategies for each player
         for agent in self.agents:
             if (agent.neighbors):
                 aggregated_strategies = []
@@ -94,6 +97,7 @@ class Network_Minority_Game(Traditional_Minority_Game):
                 agent.aggregated_strategies = np.concatenate(aggregated_strategies, axis=0)
                 agent.aggregated_virtual_point = np.concatenate(aggregated_virtual_point, axis = 0)
         
+        # Update Strategy for each player (strategies as well as virtual point of neighbors)
         for agent in self.agents:
             if (agent.neighbors):
                 agent.strategies = np.concatenate((agent.strategies, agent.aggregated_strategies), axis = 0)

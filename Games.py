@@ -62,8 +62,10 @@ class Network_Minority_Game(Traditional_Minority_Game):
             agent.neighbors = [self.agents[i] for i in list(self.network.G[agent.index])]
             if (agent.neighbors):
                 self.num_coop_agent += 1
+                self.network.colors.append("tab:orange")
             else:
                 self.num_solo_agent += 1
+                self.network.colors.append("tab:blue")
     
     def update(self, result: Tuple[str, int, int], t: int):         
         # Similar to update() of parent, but need to keep track coop and solo

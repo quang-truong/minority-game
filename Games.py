@@ -2,7 +2,7 @@ import numpy as np
 import networkx as nx
 
 from Agent import Agent
-from Network import Network, Disconnected_Network
+from Network import Network, Disconnected_Network_10
 from Aggregation import aggregate_all_neighbor_strategies
 
 from typing import List, Tuple
@@ -109,10 +109,10 @@ class Network_Minority_Game(Traditional_Minority_Game):
                 agent.aggregated_strategies = None
                 agent.aggregated_virtual_point = None
 
-class Disconnected_Network_Minority_Game(Traditional_Minority_Game):
+class Disconnected_Network_Minority_Game_10(Traditional_Minority_Game):
     def __init__(self, T: int, N: int, agents: List[Agent], past_games: str, threshold: int, time_step: List[int], time_limit = None, seed = 123):
         super().__init__(T, N, agents, past_games, threshold, time_limit)
-        self.network = Disconnected_Network(self.agents, seed)
+        self.network = Disconnected_Network_10(self.agents, seed)
         self.num_winner_by_group = {
             1: [],
             10: [],

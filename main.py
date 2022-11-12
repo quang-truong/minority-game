@@ -1,5 +1,5 @@
 import utils
-from experiments import vary_brain_size, vary_network, vary_disconnected_network
+from experiments import vary_brain_size, vary_network, vary_disconnected_network_10
 
 def main():
     T = 500
@@ -15,9 +15,9 @@ def main():
     utils.plot_network_games_result(game, ylim_lower = 0, ylim_upper= N)
     utils.plot_coop_solo(game)
 
-    # 3) Varying Disconnected Minority Game (9 Groups)
+    # 3) Varying Disconnected Minority Game (9 Groups) (** Take around 30 mins **)
     time_step = [i for i in range(T//5, T, T//5)]
-    game = vary_disconnected_network(T = T, N = N, brain_size = 8, num_strategies = 4, 
+    game = vary_disconnected_network_10(T = T, N = N, brain_size = 8, num_strategies = 4, 
                         seed = 64, time_step = time_step)
     utils.plot_network_games_result(game, ylim_lower = 0, ylim_upper= N)
     utils.plot_disconnected_groups(game)

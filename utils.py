@@ -2,7 +2,7 @@ from time import time
 import numpy as np
 import matplotlib.pyplot as plt
 
-from Games import Traditional_Minority_Game, Network_Minority_Game, Disconnected_Network_Minority_Game
+from Games import Traditional_Minority_Game, Network_Minority_Game, Disconnected_Network_Minority_Game_10
 
 def plot_games_result(game: Traditional_Minority_Game, ylim_lower: int, ylim_upper: int):
     final_results = game.final_results
@@ -26,7 +26,7 @@ def plot_games_result(game: Traditional_Minority_Game, ylim_lower: int, ylim_upp
     ax.axhline(total_agents//2, linestyle='--', color='tab:orange')
     plt.show()
 
-def plot_network_games_result(game: Network_Minority_Game or Disconnected_Network_Minority_Game, ylim_lower: int, ylim_upper: int):
+def plot_network_games_result(game: Network_Minority_Game or Disconnected_Network_Minority_Game_10, ylim_lower: int, ylim_upper: int):
     final_results = game.final_results
     total_agent = game.N
 
@@ -85,7 +85,7 @@ def plot_coop_solo(game: Network_Minority_Game):
     plt.legend()
     plt.show()
 
-def plot_disconnected_groups(game: Disconnected_Network_Minority_Game):
+def plot_disconnected_groups(game: Disconnected_Network_Minority_Game_10):
     game_index = []
 
     winner_ratio = {

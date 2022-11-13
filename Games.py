@@ -93,23 +93,28 @@ class Network_Minority_Game(Traditional_Minority_Game):
             if (agent.neighbors):
                 aggregated_strategies = []
                 aggregated_virtual_point = []
-                for neighbor in agent.neighbors:
-                    if (agent.aggregate_mode == "all"):
+                if (agent.aggregate_mode == "all"):
+                    for neighbor in agent.neighbors:
                         s, vp = aggregate_all_neighbor_strategies(agent, neighbor)
-                    elif (agent.aggregate_mode == "best"):
+                        aggregated_strategies.append(s)
+                        aggregated_virtual_point.append(vp)
+                    agent.aggregated_strategies = np.concatenate(aggregated_strategies, axis=0)
+                    agent.aggregated_virtual_point = np.concatenate(aggregated_virtual_point, axis = 0)
+                elif (agent.aggregate_mode == "best"):
+                    for neighbor in agent.neighbors:
                         s, vp = aggregate_best_neighbor_strategies(agent, neighbor)
                         if s is None:
                             continue
-                    aggregated_strategies.append(s)
-                    aggregated_virtual_point.append(vp)
-                if not aggregated_strategies:       # aggregate nothing
-                    continue
-                agent.aggregated_strategies = np.concatenate(aggregated_strategies, axis=0)
-                agent.aggregated_virtual_point = np.concatenate(aggregated_virtual_point, axis = 0)
+                        aggregated_strategies.append(s)
+                        aggregated_virtual_point.append(vp)
+                    if not aggregated_strategies:                   # aggregate nothing
+                        continue
+                    agent.aggregated_strategies = np.array(aggregated_strategies)
+                    agent.aggregated_virtual_point = np.array(aggregated_virtual_point)
         
         # Update Strategy for each player (strategies as well as virtual point of neighbors)
         for agent in self.agents:
-            if (agent.neighbors):
+            if (agent.neighbors and agent.aggregated_strategies is not None):
                 agent.strategies = np.concatenate((agent.strategies, agent.aggregated_strategies), axis = 0)
                 agent.virtual_point = np.concatenate((agent.virtual_point, agent.aggregated_virtual_point), axis = 0)
                 agent.num_strategies = agent.virtual_point.shape[0]
@@ -188,16 +193,28 @@ class Disconnected_Network_Minority_Game_10(Traditional_Minority_Game):
             if (agent.neighbors):
                 aggregated_strategies = []
                 aggregated_virtual_point = []
-                for neighbor in agent.neighbors:
-                    s, vp = aggregate_all_neighbor_strategies(agent, neighbor)
-                    aggregated_strategies.append(s)
-                    aggregated_virtual_point.append(vp)
-                agent.aggregated_strategies = np.concatenate(aggregated_strategies, axis=0)
-                agent.aggregated_virtual_point = np.concatenate(aggregated_virtual_point, axis = 0)
+                if (agent.aggregate_mode == "all"):
+                    for neighbor in agent.neighbors:
+                        s, vp = aggregate_all_neighbor_strategies(agent, neighbor)
+                        aggregated_strategies.append(s)
+                        aggregated_virtual_point.append(vp)
+                    agent.aggregated_strategies = np.concatenate(aggregated_strategies, axis=0)
+                    agent.aggregated_virtual_point = np.concatenate(aggregated_virtual_point, axis = 0)
+                elif (agent.aggregate_mode == "best"):
+                    for neighbor in agent.neighbors:
+                        s, vp = aggregate_best_neighbor_strategies(agent, neighbor)
+                        if s is None:
+                            continue
+                        aggregated_strategies.append(s)
+                        aggregated_virtual_point.append(vp)
+                    if not aggregated_strategies:                   # aggregate nothing
+                        continue
+                    agent.aggregated_strategies = np.array(aggregated_strategies)
+                    agent.aggregated_virtual_point = np.array(aggregated_virtual_point)
         
         # Update Strategy for each player (strategies as well as virtual point of neighbors)
         for agent in self.agents:
-            if (agent.neighbors):
+            if (agent.neighbors and agent.aggregated_strategies is not None):
                 agent.strategies = np.concatenate((agent.strategies, agent.aggregated_strategies), axis = 0)
                 agent.virtual_point = np.concatenate((agent.virtual_point, agent.aggregated_virtual_point), axis = 0)
                 agent.num_strategies = agent.virtual_point.shape[0]
@@ -262,16 +279,28 @@ class Disconnected_Network_Minority_Game_5(Traditional_Minority_Game):
             if (agent.neighbors):
                 aggregated_strategies = []
                 aggregated_virtual_point = []
-                for neighbor in agent.neighbors:
-                    s, vp = aggregate_all_neighbor_strategies(agent, neighbor)
-                    aggregated_strategies.append(s)
-                    aggregated_virtual_point.append(vp)
-                agent.aggregated_strategies = np.concatenate(aggregated_strategies, axis=0)
-                agent.aggregated_virtual_point = np.concatenate(aggregated_virtual_point, axis = 0)
+                if (agent.aggregate_mode == "all"):
+                    for neighbor in agent.neighbors:
+                        s, vp = aggregate_all_neighbor_strategies(agent, neighbor)
+                        aggregated_strategies.append(s)
+                        aggregated_virtual_point.append(vp)
+                    agent.aggregated_strategies = np.concatenate(aggregated_strategies, axis=0)
+                    agent.aggregated_virtual_point = np.concatenate(aggregated_virtual_point, axis = 0)
+                elif (agent.aggregate_mode == "best"):
+                    for neighbor in agent.neighbors:
+                        s, vp = aggregate_best_neighbor_strategies(agent, neighbor)
+                        if s is None:
+                            continue
+                        aggregated_strategies.append(s)
+                        aggregated_virtual_point.append(vp)
+                    if not aggregated_strategies:                   # aggregate nothing
+                        continue
+                    agent.aggregated_strategies = np.array(aggregated_strategies)
+                    agent.aggregated_virtual_point = np.array(aggregated_virtual_point)
         
         # Update Strategy for each player (strategies as well as virtual point of neighbors)
         for agent in self.agents:
-            if (agent.neighbors):
+            if (agent.neighbors and agent.aggregated_strategies is not None):
                 agent.strategies = np.concatenate((agent.strategies, agent.aggregated_strategies), axis = 0)
                 agent.virtual_point = np.concatenate((agent.virtual_point, agent.aggregated_virtual_point), axis = 0)
                 agent.num_strategies = agent.virtual_point.shape[0]

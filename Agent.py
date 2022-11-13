@@ -3,7 +3,7 @@ import numpy as np
 from Strategies import random_strategy
 
 class Agent():
-    def __init__(self, index: int, past_decisions: str, brain_size = 4, num_strategies = 5):
+    def __init__(self, index: int, past_decisions: str, brain_size = 4, num_strategies = 5, aggregate_mode = "all"):
         self.index = index
         self.past_decisions = past_decisions                        # (True or False, Win or Lose, Strategies used)
         self.brain_size = brain_size                                # Number of Bits in Brain (M)
@@ -17,6 +17,7 @@ class Agent():
         self.neighbors = []
         self.aggregated_strategies = None
         self.aggregated_virtual_point = None
+        self.aggregate_mode = aggregate_mode
 
     def filter_signal(self, signal: str):
         return int(signal[-self.brain_size:], 2)

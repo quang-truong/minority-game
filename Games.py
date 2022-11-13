@@ -3,7 +3,7 @@ import networkx as nx
 
 from Agent import Agent
 from Network import Network, Disconnected_Network_10, Disconnected_Network_5
-from Aggregation import aggregate_all_neighbor_strategies
+from Aggregation import aggregate_all_neighbor_strategies, aggregate_best_neighbor_strategies
 
 from typing import List, Tuple
 
@@ -94,9 +94,16 @@ class Network_Minority_Game(Traditional_Minority_Game):
                 aggregated_strategies = []
                 aggregated_virtual_point = []
                 for neighbor in agent.neighbors:
-                    s, vp = aggregate_all_neighbor_strategies(agent, neighbor)
+                    if (agent.aggregate_mode == "all"):
+                        s, vp = aggregate_all_neighbor_strategies(agent, neighbor)
+                    elif (agent.aggregate_mode == "best"):
+                        s, vp = aggregate_best_neighbor_strategies(agent, neighbor)
+                        if s is None:
+                            continue
                     aggregated_strategies.append(s)
                     aggregated_virtual_point.append(vp)
+                if not aggregated_strategies:       # aggregate nothing
+                    continue
                 agent.aggregated_strategies = np.concatenate(aggregated_strategies, axis=0)
                 agent.aggregated_virtual_point = np.concatenate(aggregated_virtual_point, axis = 0)
         

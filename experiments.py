@@ -14,7 +14,7 @@ def vary_brain_size(T: int, N: int, brain_size: int, num_strategies: int, seed: 
     game.start()
     return game
     
-def vary_network(T: int, N: int, brain_size: int, num_strategies: int, p: float, seed: int, time_step : List[int]):
+def propagate_all_strategies_network(T: int, N: int, brain_size: int, num_strategies: int, p: float, seed: int, time_step : List[int]):
     np.random.seed(seed)
     agents = [Agent(i, past_decisions= None, brain_size = brain_size, num_strategies= num_strategies) for i in range(N)]
     past_games = np.binary_repr(np.random.randint(0, 2**8), width = 8)         # Assume there is already 8 games played in the past
@@ -27,7 +27,7 @@ def vary_network(T: int, N: int, brain_size: int, num_strategies: int, p: float,
     game.start()
     return game
 
-def vary_disconnected_network_10(T: int, N: int, brain_size: int, num_strategies: int, seed: int, time_step : List[int]):
+def propagate_all_strategies_disconnected_network_10(T: int, N: int, brain_size: int, num_strategies: int, seed: int, time_step : List[int]):
     np.random.seed(seed)
     agents = [Agent(i, past_decisions= None, brain_size = brain_size, num_strategies= num_strategies) for i in range(N)]
     past_games = np.binary_repr(np.random.randint(0, 2**8), width = 8)         # Assume there is already 8 games played in the past
@@ -40,7 +40,7 @@ def vary_disconnected_network_10(T: int, N: int, brain_size: int, num_strategies
     game.start()
     return game
 
-def vary_disconnected_network_5(T: int, N: int, brain_size: int, num_strategies: int, seed: int, time_step : List[int]):
+def propagate_all_strategies_disconnected_network_5(T: int, N: int, brain_size: int, num_strategies: int, seed: int, time_step : List[int]):
     np.random.seed(seed)
     agents = [Agent(i, past_decisions= None, brain_size = brain_size, num_strategies= num_strategies) for i in range(N)]
     past_games = np.binary_repr(np.random.randint(0, 2**8), width = 8)         # Assume there is already 8 games played in the past

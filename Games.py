@@ -25,7 +25,6 @@ class Traditional_Minority_Game():
             self.past_games += '1' if res[0] == 'Bar' else '0'
 
     def iterate(self, t: int):
-        print("Iteration ", t)
         res = None
         num_of_attendants = 0
         num_of_stay_home = 0

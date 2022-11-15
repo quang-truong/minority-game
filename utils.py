@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 from Games import Traditional_Minority_Game, Network_Minority_Game, Disconnected_Network_Minority_Game_10, Disconnected_Network_Minority_Game_5
 
-def plot_games_result(game: Traditional_Minority_Game, ylim_lower: int, ylim_upper: int):
+def plot_games_result(game: Traditional_Minority_Game, ylim_lower: int, ylim_upper: int, fig_dir = None):
     final_results = game.final_results
     total_agents = game.N
 
@@ -24,9 +24,13 @@ def plot_games_result(game: Traditional_Minority_Game, ylim_lower: int, ylim_upp
     ax.set_xlim(0, game.T)
     ax.set_ylim(ylim_lower, ylim_upper)
     ax.axhline(total_agents//2, linestyle='--', color='tab:orange')
-    plt.show()
+    if fig_dir:
+        fig.savefig(fig_dir)
+    else:
+        plt.show()
+    plt.close(fig)
 
-def plot_network_games_result(game: Network_Minority_Game or Disconnected_Network_Minority_Game_10 or Disconnected_Network_Minority_Game_5, ylim_lower: int, ylim_upper: int):
+def plot_network_games_result(game: Network_Minority_Game or Disconnected_Network_Minority_Game_10 or Disconnected_Network_Minority_Game_5, ylim_lower: int, ylim_upper: int, fig_dir = None):
     final_results = game.final_results
     total_agent = game.N
 
@@ -48,9 +52,13 @@ def plot_network_games_result(game: Network_Minority_Game or Disconnected_Networ
     ax.axhline(total_agent*game.threshold, linestyle='--', color='tab:orange')
     for t in game.time_step:
         ax.axvline(t, linestyle='--', color='tab:grey')
-    plt.show()
+    if fig_dir:
+        fig.savefig(fig_dir)
+    else:
+        plt.show()
+    plt.close(fig)
 
-def plot_coop_solo(game: Network_Minority_Game):
+def plot_coop_solo(game: Network_Minority_Game, fig_dir = None):
     solo_winner_ratio = []
     coop_winner_ratio = []
     game_index = []
@@ -83,9 +91,13 @@ def plot_coop_solo(game: Network_Minority_Game):
     for t in game.time_step:
         ax.axvline(t, linestyle='--', color='tab:grey')
     plt.legend()
-    plt.show()
+    if fig_dir:
+        fig.savefig(fig_dir)
+    else:
+        plt.show()
+    plt.close(fig)
 
-def plot_disconnected_groups_10(game: Disconnected_Network_Minority_Game_10):
+def plot_disconnected_groups_10(game: Disconnected_Network_Minority_Game_10, fig_dir = None):
     game_index = []
 
     winner_ratio = {
@@ -164,9 +176,13 @@ def plot_disconnected_groups_10(game: Disconnected_Network_Minority_Game_10):
     for t in game.time_step:
         ax.axvline(t, linestyle='--', color='tab:grey')
     plt.legend()
-    plt.show()
+    if fig_dir:
+        fig.savefig(fig_dir)
+    else:
+        plt.show()
+    plt.close(fig)
 
-def plot_disconnected_groups_5(game: Disconnected_Network_Minority_Game_5):
+def plot_disconnected_groups_5(game: Disconnected_Network_Minority_Game_5, fig_dir = None):
     game_index = []
 
     winner_ratio = {
@@ -225,7 +241,11 @@ def plot_disconnected_groups_5(game: Disconnected_Network_Minority_Game_5):
     for t in game.time_step:
         ax.axvline(t, linestyle='--', color='tab:grey')
     plt.legend()
-    plt.show()
+    if fig_dir:
+        fig.savefig(fig_dir)
+    else:
+        plt.show()
+    plt.close(fig)
 
 def rolling_window(a, window):
     '''

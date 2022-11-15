@@ -12,10 +12,14 @@ class Network():
         self.G = nx.generators.erdos_renyi_graph(len(self.agents), p, seed)
         self.colors = []
     
-    def plot_graph(self):
+    def plot_graph(self, fig_dir = None):
         options = {"edgecolors": "tab:gray", "node_color": self.colors, "node_size": 150, "alpha": 0.9, "font_size": 8, "font_color": "whitesmoke"}
         nx.draw_networkx(self.G, with_labels = False, **options)
-        plt.show()
+        if fig_dir:
+            plt.savefig(fig_dir)
+        else:
+            plt.show()
+        plt.close()
 
 class Disconnected_Network_10(Network):
     def __init__(self, agents: List[Agent], seed: int):
@@ -37,10 +41,14 @@ class Disconnected_Network_10(Network):
         self.G = nx.convert_node_labels_to_integers(self.G)
         self.colors = []
     
-    def plot_graph(self):
+    def plot_graph(self, fig_dir = None):
         options = {"edgecolors": "tab:gray", "node_color": self.colors, "node_size": 150, "alpha": 0.9, "font_size": 8, "font_color": "whitesmoke"}
         nx.draw_shell(self.G, with_labels = False, **options)
-        plt.show()
+        if fig_dir:
+            plt.savefig(fig_dir)
+        else:
+            plt.show()
+        plt.close()
 
 class Disconnected_Network_5(Network):
     def __init__(self, agents: List[Agent], seed: int):
@@ -57,7 +65,11 @@ class Disconnected_Network_5(Network):
         self.G = nx.convert_node_labels_to_integers(self.G)
         self.colors = []
     
-    def plot_graph(self):
+    def plot_graph(self, fig_dir = None):
         options = {"edgecolors": "tab:gray", "node_color": self.colors, "node_size": 150, "alpha": 0.9, "font_size": 8, "font_color": "whitesmoke"}
         nx.draw_shell(self.G, with_labels = False, **options)
-        plt.show()
+        if fig_dir:
+            plt.savefig(fig_dir)
+        else:
+            plt.show()
+        plt.close()

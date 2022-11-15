@@ -268,31 +268,34 @@ def compute_statistics(stats, time_step, colors, fig_dir = None):
             print("Group {0} - Time Step {1} - Statistics: \t Avg = {2:.2%} \t Min = {3:.2%} \t Q1 = {4:.2%} \t Median = {5:.2%} \t Q3 = {6:.2%} \t Max = {7:.2%} \t IQR = {8:.2%}".format(
                 key, time_step[i], avg, lower_whisker, lower_quartile, median, upper_quartile, upper_whisker, iqr
             ))
+    
+    num_categories = len(stats)
+    left_offsets = [-i/10 for i in range(4*(len(stats)//2), 0, -4)]
+    right_offsets = [i/10 for i in range(4, 4*(len(stats)//2 + 1), 4)]
+    if num_categories % 2 == 0:
+        offsets = left_offsets + right_offsets
+    else:
+        offsets = left_offsets + [0] + right_offsets
+    
+    i = 0
+    for key, _ in stats.items():
+        bp_tmp = ax.boxplot(stats[key], positions=np.array(range(len(stats[key])))*num_categories + offsets[i], sym='', widths=0.6)
+        set_box_color(bp_tmp, colors[key])
+        i += 1
+
+    # draw temporary lines and use them to create a legend
+    for key, val in colors.items():
+        plt.plot([], c=val, label=key)
+    plt.legend()
+
+    plt.xticks(range(0, len(time_step) * 2, 2), time_step)
+    plt.xlim(-2, len(time_step)*2)
+    ax.set_xlabel("Game")
+    ax.set_ylabel("Winning Ratio")
+    plt.tight_layout()
     if fig_dir:
-        num_categories = len(stats)
-        left_offsets = [i/10 for i in range(4*(len(stats)//2), 0, -4)]
-        right_offsets = left_offsets.reverse()
-        if num_categories % 2 == 1:
-            offsets = -left_offsets + right_offsets
-        else:
-            offsets = -left_offsets + [0] + right_offsets
-        
-        i = 0
-        for key, _ in stats.items():
-            bp_tmp = ax.boxplot(stats[key], positions=np.array(range(len(stats[key])))*num_categories + offsets[i], sym='', widths=0.6)
-            set_box_color(bp_tmp, colors[key])
-            i += 1
-
-        # draw temporary lines and use them to create a legend
-        for key, val in colors:
-            plt.plot([], c=val, label=key)
-        plt.legend()
-
-        plt.xticks(range(0, len(time_step) * 2, 2), time_step)
-        plt.xlim(-2, len(time_step)*2)
-        ax.set_xlabel("Game")
-        ax.set_ylabel("Winning Ratio")
-        plt.tight_layout()
+        fig.savefig(fig_dir)
+    else:
         plt.show()
 
 def set_box_color(bp, color):

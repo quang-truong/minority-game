@@ -74,6 +74,6 @@ def main():
     time_step = [i for i in range(T//5, T, T//5)]
     game, stats = propagate_all_strategies_network_100_times(T = T, N = N, brain_size = 8, num_strategies = 4, 
                         p = 0.0025, seed = 64, time_step = time_step)
-    utils.compute_statistics(stats, game.time_step, colors = {'solo': 'tab:blue', 'coop':'tab:orange'})
+    utils.compute_statistics(stats, game.time_step, colors = {'solo': 'tab:blue', 'coop':'tab:orange'}, fig_dir= None)
 if __name__ == "__main__":
     main()

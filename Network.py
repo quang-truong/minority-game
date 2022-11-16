@@ -50,16 +50,15 @@ class Disconnected_Network_10(Network):
             plt.show()
         plt.close()
 
-class Disconnected_Network_5(Network):
+class Disconnected_Network_4(Network):
     def __init__(self, agents: List[Agent], seed: int):
         super().__init__(agents, 0.5, seed)
         self.G = nx.Graph()
         self.G.add_node(1)
-        for i in [32, 64, 128, 256]:
-            if (i == 32):   p = 0.15
-            elif (i == 64): p = 0.1
-            elif (i == 128): p = 0.04
-            else: p = 0.02
+        for i in [64, 128, 256]:
+            if (i == 64): p = 0.1
+            elif (i == 128): p = 0.035
+            else: p = 0.019
             g = (nx.generators.erdos_renyi_graph(i, p, seed))           # actually p = 0.5 is the minimum bound to guarantee to have a connected graph of N nodes.
             self.G = nx.union(self.G, g, rename=('A', 'B'))             # If p doesn't work, try to increase p. The trade-off is longer runtime.
         self.G = nx.convert_node_labels_to_integers(self.G)

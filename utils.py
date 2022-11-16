@@ -2,7 +2,7 @@ from time import time
 import numpy as np
 import matplotlib.pyplot as plt
 
-from Games import Traditional_Minority_Game, Network_Minority_Game, Disconnected_Network_Minority_Game_10, Disconnected_Network_Minority_Game_5
+from Games import Traditional_Minority_Game, Network_Minority_Game, Disconnected_Network_Minority_Game_10, Disconnected_Network_Minority_Game_4
 
 def plot_games_result(game: Traditional_Minority_Game, ylim_lower: int, ylim_upper: int, fig_dir = None):
     final_results = game.final_results
@@ -30,7 +30,7 @@ def plot_games_result(game: Traditional_Minority_Game, ylim_lower: int, ylim_upp
         plt.show()
     plt.close(fig)
 
-def plot_network_games_result(game: Network_Minority_Game or Disconnected_Network_Minority_Game_10 or Disconnected_Network_Minority_Game_5, ylim_lower: int, ylim_upper: int, fig_dir = None):
+def plot_network_games_result(game: Network_Minority_Game or Disconnected_Network_Minority_Game_10 or Disconnected_Network_Minority_Game_4, ylim_lower: int, ylim_upper: int, fig_dir = None):
     final_results = game.final_results
     total_agent = game.N
 
@@ -182,12 +182,11 @@ def plot_disconnected_groups_10(game: Disconnected_Network_Minority_Game_10, fig
         plt.show()
     plt.close(fig)
 
-def plot_disconnected_groups_5(game: Disconnected_Network_Minority_Game_5, fig_dir = None):
+def plot_disconnected_groups_5(game: Disconnected_Network_Minority_Game_4, fig_dir = None):
     game_index = []
 
     winner_ratio = {
         1: [],
-        32: [],
         64: [],
         128: [],
         256: [],
@@ -195,7 +194,6 @@ def plot_disconnected_groups_5(game: Disconnected_Network_Minority_Game_5, fig_d
 
     windows = {
         1: [],
-        32: [],
         64: [],
         128: [],
         256: [],
@@ -203,7 +201,6 @@ def plot_disconnected_groups_5(game: Disconnected_Network_Minority_Game_5, fig_d
 
     rolling_avg = {
         1: [],
-        32: [],
         64: [],
         128: [],
         256: [],
@@ -211,7 +208,6 @@ def plot_disconnected_groups_5(game: Disconnected_Network_Minority_Game_5, fig_d
 
     rolling_std = {
         1: [],
-        32: [],
         64: [],
         128: [],
         256: [],

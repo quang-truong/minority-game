@@ -2,7 +2,7 @@ import numpy as np
 import networkx as nx
 
 from Agent import Agent
-from Network import Network, Disconnected_Network_10, Disconnected_Network_5
+from Network import Network, Disconnected_Network_10, Disconnected_Network_4
 from Aggregation import aggregate_all_neighbor_strategies, aggregate_best_neighbor_strategies
 
 from typing import List, Tuple
@@ -221,13 +221,12 @@ class Disconnected_Network_Minority_Game_10(Traditional_Minority_Game):
                 agent.aggregated_virtual_point = None
 
 
-class Disconnected_Network_Minority_Game_5(Traditional_Minority_Game):
+class Disconnected_Network_Minority_Game_4(Traditional_Minority_Game):
     def __init__(self, T: int, N: int, agents: List[Agent], past_games: str, threshold: int, time_step: List[int], time_limit = None, seed = 123):
         super().__init__(T, N, agents, past_games, threshold, time_limit)
-        self.network = Disconnected_Network_5(self.agents, seed)
+        self.network = Disconnected_Network_4(self.agents, seed)
         self.num_winner_by_group = {
             1: [],
-            32: [],
             64: [],
             128: [],
             256: [],
@@ -236,10 +235,9 @@ class Disconnected_Network_Minority_Game_5(Traditional_Minority_Game):
 
         self.colors = {
             1: "tab:blue",
-            32: "tab:orange",
-            64: "tab:green",
-            128: "tab:red",
-            256: "tab:purple",
+            64: "tab:orange",
+            128: "tab:green",
+            256: "tab:red",
         }
 
         self.update_network()
@@ -256,7 +254,6 @@ class Disconnected_Network_Minority_Game_5(Traditional_Minority_Game):
         # as well as propagate strategies
         num_winner_by_group = {
             1: 0,
-            32: 0,
             64: 0,
             128: 0,
             256: 0,

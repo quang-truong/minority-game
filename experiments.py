@@ -129,3 +129,38 @@ def propagate_strategies_disconnected_network_10_100_times(aggregate_mode: str, 
             stats[80][i].append(np.mean(game.num_winner_by_group[80][time_step[i]-5:time_step[i]+5])/80)
             stats[90][i].append(np.mean(game.num_winner_by_group[90][time_step[i]-5:time_step[i]+5])/90)
     return game, stats
+
+def propagate_strategies_disconnected_network_5_100_times(aggregate_mode: str, T: int, N: int, brain_size: int, num_strategies: int, seed: int, time_step : List[int], fig_dir = None):
+    np.random.seed(seed)
+
+    stats = {
+        1: [],
+        32: [],
+        64: [],
+        128: [],
+        256: []
+    }
+
+    for t in time_step:
+        stats[1].append([])
+        stats[32].append([])
+        stats[64].append([])
+        stats[128].append([])
+        stats[256].append([])
+
+    for i in range(100):
+        agents = [Agent(i, past_decisions= None, brain_size = brain_size, num_strategies= num_strategies, aggregate_mode= aggregate_mode) for i in range(N)]
+        past_games = np.binary_repr(np.random.randint(0, 2**8), width = 8)         # Assume there is already 8 games played in the past
+
+        game = Disconnected_Network_Minority_Game_5(T, N, agents, past_games = past_games, 
+                                    threshold = 0.5,
+                                    time_step = time_step,
+                                    time_limit= None, seed = seed)
+        game.start()
+        for i in range(len(time_step)):
+            stats[1][i].append(np.mean(game.num_winner_by_group[1][time_step[i]-5:time_step[i]+5])/1)
+            stats[32][i].append(np.mean(game.num_winner_by_group[32][time_step[i]-5:time_step[i]+5])/32)
+            stats[64][i].append(np.mean(game.num_winner_by_group[64][time_step[i]-5:time_step[i]+5])/64)
+            stats[128][i].append(np.mean(game.num_winner_by_group[128][time_step[i]-5:time_step[i]+5])/128)
+            stats[256][i].append(np.mean(game.num_winner_by_group[256][time_step[i]-5:time_step[i]+5])/256)
+    return game, stats

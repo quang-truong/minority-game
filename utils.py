@@ -2,7 +2,7 @@ from time import time
 import numpy as np
 import matplotlib.pyplot as plt
 
-from Games import Traditional_Minority_Game, Network_Minority_Game, Disconnected_Network_Minority_Game_10, Disconnected_Network_Minority_Game_4
+from Games import Traditional_Minority_Game, Network_Minority_Game, Disconnected_Network_Minority_Game_10, Disconnected_Network_Minority_Game_4, Guru_Network_Minority_Game
 
 def plot_games_result(game: Traditional_Minority_Game, ylim_lower: int, ylim_upper: int, fig_dir = None):
     final_results = game.final_results
@@ -30,7 +30,7 @@ def plot_games_result(game: Traditional_Minority_Game, ylim_lower: int, ylim_upp
         plt.show()
     plt.close(fig)
 
-def plot_network_games_result(game: Network_Minority_Game or Disconnected_Network_Minority_Game_10 or Disconnected_Network_Minority_Game_4, ylim_lower: int, ylim_upper: int, fig_dir = None):
+def plot_network_games_result(game: Network_Minority_Game or Disconnected_Network_Minority_Game_10 or Disconnected_Network_Minority_Game_4 or Guru_Network_Minority_Game, ylim_lower: int, ylim_upper: int, fig_dir = None):
     final_results = game.final_results
     total_agent = game.N
 
@@ -86,6 +86,45 @@ def plot_coop_solo(game: Network_Minority_Game, fig_dir = None):
     ax.fill_between(game_index[:-9], solo_rolling_avg - solo_rolling_std, solo_rolling_avg + solo_rolling_std, color = "tab:blue", alpha = 0.2)
     ax.plot(game_index[:-9], coop_rolling_avg, color = "tab:orange", label = "coop")
     ax.fill_between(game_index[:-9], coop_rolling_avg - coop_rolling_std, coop_rolling_avg + coop_rolling_std, color = "tab:orange", alpha = 0.2)
+    ax.set_xlabel("Game")
+    ax.set_ylabel("Winning Ratio (# winners / # ppl in that category)")
+    for t in game.time_step:
+        ax.axvline(t, linestyle='--', color='tab:grey')
+    plt.legend()
+    if fig_dir:
+        fig.savefig(fig_dir, dpi = 500)
+    else:
+        plt.show()
+    plt.close(fig)
+
+def plot_guru_solo(game: Guru_Network_Minority_Game, fig_dir = None):
+    solo_winner_ratio = []
+    guru_winner_ratio = []
+    game_index = []
+
+    fig, ax = plt.subplots()
+    for i in range(game.T):
+        solo_winner_ratio.append(game.arr_num_solo_winner[i]/game.num_solo_agent)
+        guru_winner_ratio.append(game.arr_num_guru_winner[i]/game.num_guru_agent)
+        game_index.append(i)
+    
+    solo_winner_ratio = np.array(solo_winner_ratio)
+    guru_winner_ratio = np.array(guru_winner_ratio)
+    game_index = np.array(game_index)
+    
+    solo_windows = rolling_window(solo_winner_ratio, 10)
+    solo_rolling_avg = np.average(solo_windows, 1)
+    solo_rolling_std = np.std(solo_windows, 1)
+
+    guru_windows = rolling_window(guru_winner_ratio, 10)
+    guru_rolling_avg = np.average(guru_windows, 1)
+    guru_rolling_std = np.std(guru_windows, 1)
+
+        
+    ax.plot(game_index[:-9], solo_rolling_avg, color = "tab:blue", label = "solo")
+    ax.fill_between(game_index[:-9], solo_rolling_avg - solo_rolling_std, solo_rolling_avg + solo_rolling_std, color = "tab:blue", alpha = 0.2)
+    ax.plot(game_index[:-9], guru_rolling_avg, color = "tab:red", label = "guru")
+    ax.fill_between(game_index[:-9], guru_rolling_avg - guru_rolling_std, guru_rolling_avg + guru_rolling_std, color = "tab:red", alpha = 0.2)
     ax.set_xlabel("Game")
     ax.set_ylabel("Winning Ratio (# winners / # ppl in that category)")
     for t in game.time_step:

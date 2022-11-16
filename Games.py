@@ -120,6 +120,89 @@ class Network_Minority_Game(Traditional_Minority_Game):
                 agent.aggregated_strategies = None
                 agent.aggregated_virtual_point = None
 
+class Guru_Network_Minority_Game(Traditional_Minority_Game):
+    def __init__(self, T: int, N: int, agents: List[Agent], past_games: str, threshold: int, p: float, time_step: List[int], time_limit = None, seed = 123):
+        super().__init__(T, N, agents, past_games, threshold, time_limit)
+        self.network = Network(self.agents, p, seed)
+        self.num_solo_agent = 0
+        self.num_guru_agent = 0
+        self.arr_num_solo_winner = []
+        self.arr_num_guru_winner = []
+        self.time_step = time_step
+        self.update_network()
+    
+    def update_network(self):
+        for agent in self.agents:
+            self.network.G.nodes[agent.index]['object'] = agent
+            agent.neighbors = [self.agents[i] for i in list(self.network.G[agent.index])]
+            if (agent.guru):
+                self.num_guru_agent += 1
+                self.network.colors.append("tab:red")
+            else:
+                self.num_solo_agent += 1
+                self.network.colors.append("tab:blue")
+    
+    def update(self, result: Tuple[str, int, int], t: int):         
+        # Similar to update() of parent, but need to keep track coop and solo
+        # as well as propagate strategies
+        num_solo_winner = 0
+        num_guru_winner = 0
+        for agent in self.agents:
+            is_winner = agent.update(result[0], self.past_games)
+            if (agent.guru):
+                if (is_winner):
+                    num_guru_winner += 1
+            else:
+                if (is_winner):
+                    num_solo_winner += 1
+        self.arr_num_solo_winner.append(num_solo_winner)
+        self.arr_num_guru_winner.append(num_guru_winner)
+        if (t in self.time_step):           # propagate strategies at pre-defined time steps
+            self.propagate()
+
+    def iterate(self, t: int):
+        res = None
+        num_of_attendants = 0
+        num_of_stay_home = 0
+        for agent in self.agents:
+            if (agent.guru):            # reverse psychology
+                decision = agent.make_rp_decision(self.past_games)
+            else:
+                decision = agent.make_decision(self.past_games)
+            if (decision == 'Bar'): num_of_attendants += 1
+            else: num_of_stay_home += 1
+        if (self.threshold != None):                # El Farol threshold
+            res = 'Bar' if num_of_attendants / (num_of_attendants + num_of_stay_home) < self.threshold else 'Home'
+        else:
+            res = 'Bar' if num_of_attendants < num_of_stay_home else 'Home'
+        return (res, num_of_attendants, num_of_stay_home)
+    
+    def propagate(self):
+        # Temporary Aggregate Strategies for each player
+        for agent in self.agents:
+            if (agent.guru):
+                aggregated_strategies = []
+                aggregated_virtual_point = []
+                for neighbor in agent.neighbors:
+                    s, vp = aggregate_best_neighbor_strategies(agent, neighbor)
+                    if s is None:
+                        continue
+                    aggregated_strategies.append(s)
+                    aggregated_virtual_point.append(vp)
+                if not aggregated_strategies:                   # aggregate nothing
+                    continue
+                agent.aggregated_strategies = np.array(aggregated_strategies)
+                agent.aggregated_virtual_point = np.array(aggregated_virtual_point)
+        
+        # Update Strategy for each player (strategies as well as virtual point of neighbors)
+        for agent in self.agents:
+            if (agent.guru and agent.aggregated_strategies is not None):
+                agent.strategies = np.concatenate((agent.strategies, agent.aggregated_strategies), axis = 0)
+                agent.virtual_point = np.concatenate((agent.virtual_point, agent.aggregated_virtual_point), axis = 0)
+                agent.num_strategies = agent.virtual_point.shape[0]
+                agent.aggregated_strategies = None
+                agent.aggregated_virtual_point = None
+
 class Disconnected_Network_Minority_Game_10(Traditional_Minority_Game):
     def __init__(self, T: int, N: int, agents: List[Agent], past_games: str, threshold: int, time_step: List[int], time_limit = None, seed = 123):
         super().__init__(T, N, agents, past_games, threshold, time_limit)

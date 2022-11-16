@@ -1,9 +1,10 @@
 import numpy as np
 
-from Games import Traditional_Minority_Game, Network_Minority_Game, Disconnected_Network_Minority_Game_10, Disconnected_Network_Minority_Game_4
+from Games import Traditional_Minority_Game, Network_Minority_Game, Disconnected_Network_Minority_Game_10, Disconnected_Network_Minority_Game_4, Guru_Network_Minority_Game
 from Agent import Agent
 
 from typing import List
+from random import sample
 
 def vary_brain_size(T: int, N: int, brain_size: int, num_strategies: int, seed: int):
     np.random.seed(seed)
@@ -20,6 +21,22 @@ def propagate_strategies_network(aggregate_mode: str, T: int, N: int, brain_size
     past_games = np.binary_repr(np.random.randint(0, 2**8), width = 8)         # Assume there is already 8 games played in the past
 
     game = Network_Minority_Game(T, N, agents, past_games = past_games, 
+                                threshold = 0.5, p = p,
+                                time_step = time_step,
+                                time_limit= None, seed = seed)
+    game.network.plot_graph(fig_dir)
+    game.start()
+    return game
+
+def propagate_strategies_guru_network(T: int, N: int, brain_size: int, num_strategies: int, p: float, seed: int, time_step : List[int], fig_dir = None):
+    np.random.seed(seed)
+    agents = [Agent(i, past_decisions= None, brain_size = brain_size, num_strategies= num_strategies) for i in range(N)]
+    guru_idx = sample([i for i in range(N)], N//2)
+    for i in guru_idx:
+        agents[i].guru = True
+    past_games = np.binary_repr(np.random.randint(0, 2**8), width = 8)         # Assume there is already 8 games played in the past
+
+    game = Guru_Network_Minority_Game(T, N, agents, past_games = past_games, 
                                 threshold = 0.5, p = p,
                                 time_step = time_step,
                                 time_limit= None, seed = seed)

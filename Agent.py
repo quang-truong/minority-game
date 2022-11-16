@@ -3,7 +3,7 @@ import numpy as np
 from Strategies import random_strategy
 
 class Agent():
-    def __init__(self, index: int, past_decisions: str, brain_size = 4, num_strategies = 5, aggregate_mode = "all"):
+    def __init__(self, index: int, past_decisions: str, brain_size = 4, num_strategies = 5, aggregate_mode = "all", guru = False):
         self.index = index
         self.past_decisions = past_decisions                        # (True or False, Win or Lose, Strategies used)
         self.brain_size = brain_size                                # Number of Bits in Brain (M)
@@ -19,12 +19,29 @@ class Agent():
         self.aggregated_virtual_point = None
         self.aggregate_mode = aggregate_mode
 
+        # guru attribute
+        self.guru = guru
+
     def filter_signal(self, signal: str):
         return int(signal[-self.brain_size:], 2)
     
     def make_decision(self, signal: str):
         filtered_signal = self.filter_signal(signal)
         decision = int(self.best_strategy[filtered_signal])
+        return 'Bar' if decision else 'Home'
+    
+    def make_rp_decision(self, signal: str):
+        filtered_signal = self.filter_signal(signal)
+        unique, counts = np.unique(self.strategies[filtered_signal], return_counts= True)
+        tmp = dict(zip(unique, counts))
+        decision = None
+        if len(tmp) == 1:
+            decision = tmp.keys[0]
+        else:
+            if (tmp[0] <= tmp[1]):
+                decision = 0
+            else:
+                decision = 1
         return 'Bar' if decision else 'Home'
 
     def update(self, result: int, signal: str):

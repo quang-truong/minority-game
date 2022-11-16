@@ -107,7 +107,7 @@ def plot_guru_solo(game: Guru_Network_Minority_Game, fig_dir = None):
         solo_winner_ratio.append(game.arr_num_solo_winner[i]/game.num_solo_agent)
         guru_winner_ratio.append(game.arr_num_guru_winner[i]/game.num_guru_agent)
         game_index.append(i)
-    
+
     solo_winner_ratio = np.array(solo_winner_ratio)
     guru_winner_ratio = np.array(guru_winner_ratio)
     game_index = np.array(game_index)

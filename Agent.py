@@ -48,11 +48,28 @@ class Agent():
         is_winner = False
         result = 1 if result == 'Bar' else 0
         filtered_signal = self.filter_signal(signal)
-        if self.best_strategy[filtered_signal] == result:                       # Update Score based on Result
-            self.score += 1
-            is_winner = True
+        if (self.guru):
+            unique, counts = np.unique(self.strategies[:, filtered_signal], return_counts= True)
+            tmp = dict(zip(unique, counts))
+            decision = None
+            if len(tmp) == 1:
+                decision = list(tmp.keys())[0]
+            else:
+                if (tmp[0] <= tmp[1]):
+                    decision = 0
+                else:
+                    decision = 1
+            if (decision == result):
+                self.score += 1
+                is_winner = True
+            else:
+                self.score -= 1
         else:
-            self.score -= 1
+            if self.best_strategy[filtered_signal] == result:                       # Update Score based on Result
+                self.score += 1
+                is_winner = True
+            else:
+                self.score -= 1
         for i in range(self.num_strategies):                                    # Calculate next best Strategy
             if int(self.strategies[i][filtered_signal]) == result:
                 self.virtual_point[i] += 1

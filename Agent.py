@@ -32,11 +32,11 @@ class Agent():
     
     def make_rp_decision(self, signal: str):
         filtered_signal = self.filter_signal(signal)
-        unique, counts = np.unique(self.strategies[filtered_signal], return_counts= True)
+        unique, counts = np.unique(self.strategies[:, filtered_signal], return_counts= True)
         tmp = dict(zip(unique, counts))
         decision = None
         if len(tmp) == 1:
-            decision = tmp.keys[0]
+            decision = list(tmp.keys())[0]
         else:
             if (tmp[0] <= tmp[1]):
                 decision = 0

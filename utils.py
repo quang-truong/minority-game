@@ -25,7 +25,7 @@ def plot_games_result(game: Traditional_Minority_Game, ylim_lower: int, ylim_upp
     ax.set_ylim(ylim_lower, ylim_upper)
     ax.axhline(total_agents//2, linestyle='--', color='tab:orange')
     if fig_dir:
-        fig.savefig(fig_dir)
+        fig.savefig(fig_dir, dpi = 500)
     else:
         plt.show()
     plt.close(fig)
@@ -53,7 +53,7 @@ def plot_network_games_result(game: Network_Minority_Game or Disconnected_Networ
     for t in game.time_step:
         ax.axvline(t, linestyle='--', color='tab:grey')
     if fig_dir:
-        fig.savefig(fig_dir)
+        fig.savefig(fig_dir, dpi = 500)
     else:
         plt.show()
     plt.close(fig)
@@ -92,7 +92,7 @@ def plot_coop_solo(game: Network_Minority_Game, fig_dir = None):
         ax.axvline(t, linestyle='--', color='tab:grey')
     plt.legend()
     if fig_dir:
-        fig.savefig(fig_dir)
+        fig.savefig(fig_dir, dpi = 500)
     else:
         plt.show()
     plt.close(fig)
@@ -177,7 +177,7 @@ def plot_disconnected_groups_10(game: Disconnected_Network_Minority_Game_10, fig
         ax.axvline(t, linestyle='--', color='tab:grey')
     plt.legend()
     if fig_dir:
-        fig.savefig(fig_dir)
+        fig.savefig(fig_dir, dpi = 500)
     else:
         plt.show()
     plt.close(fig)
@@ -242,7 +242,7 @@ def plot_disconnected_groups_5(game: Disconnected_Network_Minority_Game_5, fig_d
         ax.axvline(t, linestyle='--', color='tab:grey')
     plt.legend()
     if fig_dir:
-        fig.savefig(fig_dir)
+        fig.savefig(fig_dir, dpi = 500)
     else:
         plt.show()
     plt.close(fig)
@@ -271,12 +271,14 @@ def compute_statistics(stats, time_step, colors, width_a = 1, width_b = 0.1, fig
     
     num_categories = len(stats)
     left_offsets = [-i/10 for i in range(width_a*(len(stats)//2), 0, -width_a)]
-    right_offsets = [i/10 for i in range(width_a, 1*(len(stats)//2 + 1), width_a)]
+    right_offsets = [i/10 for i in range(width_a, width_a*(len(stats)//2 + 1), width_a)]
     if num_categories % 2 == 0:
         offsets = left_offsets + right_offsets
     else:
         offsets = left_offsets + [0] + right_offsets
     
+    offsets = np.array(offsets)
+
     i = 0
     for key, _ in stats.items():
         bp_tmp = ax.boxplot(stats[key], positions=np.array(range(len(stats[key])))*num_categories + offsets[i], sym='', widths=width_b)
@@ -288,13 +290,15 @@ def compute_statistics(stats, time_step, colors, width_a = 1, width_b = 0.1, fig
         plt.plot([], c=val, label=key)
     plt.legend()
 
-    plt.xticks(range(0, len(time_step) * 2, 2), time_step)
-    plt.xlim(-2, len(time_step)*2)
+    plt.xticks(range(0, len(time_step) * num_categories, num_categories), time_step)
+    plt.xlim(-num_categories, len(time_step)*num_categories)
     ax.set_xlabel("Game")
     ax.set_ylabel("Winning Ratio")
-    plt.tight_layout()
+
     if fig_dir:
-        fig.savefig(fig_dir)
+        fig.tight_layout()
+        fig.set_size_inches(19.20, 10.80)
+        fig.savefig(fig_dir, dpi = 500)
     else:
         plt.show()
 

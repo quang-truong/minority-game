@@ -16,7 +16,7 @@ class Network():
         options = {"edgecolors": "tab:gray", "node_color": self.colors, "node_size": 150, "alpha": 0.9, "font_size": 8, "font_color": "whitesmoke"}
         nx.draw_networkx(self.G, with_labels = False, **options)
         if fig_dir:
-            plt.savefig(fig_dir)
+            plt.savefig(fig_dir, dpi = 500)
         else:
             plt.show()
         plt.close()
@@ -45,7 +45,7 @@ class Disconnected_Network_10(Network):
         options = {"edgecolors": "tab:gray", "node_color": self.colors, "node_size": 150, "alpha": 0.9, "font_size": 8, "font_color": "whitesmoke"}
         nx.draw_shell(self.G, with_labels = False, **options)
         if fig_dir:
-            plt.savefig(fig_dir)
+            plt.savefig(fig_dir, dpi = 500)
         else:
             plt.show()
         plt.close()
@@ -69,7 +69,7 @@ class Disconnected_Network_5(Network):
         options = {"edgecolors": "tab:gray", "node_color": self.colors, "node_size": 150, "alpha": 0.9, "font_size": 8, "font_color": "whitesmoke"}
         nx.draw_shell(self.G, with_labels = False, **options)
         if fig_dir:
-            plt.savefig(fig_dir)
+            plt.savefig(fig_dir, dpi = 500)
         else:
             plt.show()
         plt.close()

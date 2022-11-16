@@ -247,7 +247,7 @@ def plot_disconnected_groups_5(game: Disconnected_Network_Minority_Game_5, fig_d
         plt.show()
     plt.close(fig)
 
-def compute_statistics(stats, time_step, colors, fig_dir = None):
+def compute_statistics(stats, time_step, colors, width_a = 1, width_b = 0.1, fig_dir = None):
     '''
         https://stackoverflow.com/questions/23461713/obtaining-values-used-in-boxplot-using-python-and-matplotlib
         https://stackoverflow.com/questions/16592222/matplotlib-group-boxplots
@@ -270,8 +270,8 @@ def compute_statistics(stats, time_step, colors, fig_dir = None):
             ))
     
     num_categories = len(stats)
-    left_offsets = [-i/10 for i in range(4*(len(stats)//2), 0, -4)]
-    right_offsets = [i/10 for i in range(4, 4*(len(stats)//2 + 1), 4)]
+    left_offsets = [-i/10 for i in range(width_a*(len(stats)//2), 0, -width_a)]
+    right_offsets = [i/10 for i in range(width_a, 1*(len(stats)//2 + 1), width_a)]
     if num_categories % 2 == 0:
         offsets = left_offsets + right_offsets
     else:
@@ -279,7 +279,7 @@ def compute_statistics(stats, time_step, colors, fig_dir = None):
     
     i = 0
     for key, _ in stats.items():
-        bp_tmp = ax.boxplot(stats[key], positions=np.array(range(len(stats[key])))*num_categories + offsets[i], sym='', widths=0.6)
+        bp_tmp = ax.boxplot(stats[key], positions=np.array(range(len(stats[key])))*num_categories + offsets[i], sym='', widths=width_b)
         set_box_color(bp_tmp, colors[key])
         i += 1
 

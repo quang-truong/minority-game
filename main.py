@@ -74,20 +74,20 @@ def main():
     # time_step = [i for i in range(T//5, T, T//5)]
     # game, stats = propagate_all_strategies_network_100_times(T = T, N = N, brain_size = 8, num_strategies = 4, 
     #                     p = 0.0025, seed = 64, time_step = time_step)
-    # utils.compute_statistics(stats, game.time_step, colors = {'solo': 'tab:blue', 'coop':'tab:orange'}, fig_dir= 'figures/exp8_boxplot.png')
+    # utils.compute_statistics(stats, game.time_step, colors = {'solo': 'tab:blue', 'coop':'tab:orange'}, width_a = 4, width_b = 0.6, fig_dir= 'figures/exp8_boxplot.png')
 
     # # 9) Propagate Best Strategies 100 times - Network Minority Game
     # print("Experiment 9:")
     # time_step = [i for i in range(T//5, T, T//5)]
     # game, stats = propagate_best_strategies_network_100_times(T = T, N = N, brain_size = 8, num_strategies = 4, 
     #                     p = 0.0025, seed = 64, time_step = time_step)
-    # utils.compute_statistics(stats, game.time_step, colors = {'solo': 'tab:blue', 'coop':'tab:orange'}, fig_dir= 'figures/exp9_boxplot.png')
+    # utils.compute_statistics(stats, game.time_step, colors = {'solo': 'tab:blue', 'coop':'tab:orange'}, width_a = 4, width_b = 0.6, fig_dir= 'figures/exp9_boxplot.png')
 
     # 10) Propagate All Strategies 100 times - Disconnected Minority Game (10 Groups)
     print("Experiment 10:")
     time_step = [i for i in range(T//5, T, T//5)]
-    game, stats = propagate_all_strategies_disconnected_network_10_100_times(T = T, N = 451, brain_size = 8, num_strategies = 4, 
+    game, stats = propagate_best_strategies_disconnected_network_10_100_times(T = T, N = 451, brain_size = 8, num_strategies = 4, 
                         seed = 64, time_step = time_step)
-    utils.compute_statistics(stats, game.time_step, colors = game.colors, fig_dir= None)
+    utils.compute_statistics(stats, game.time_step, colors = game.colors, width_a = 1, width_b = 0.1, fig_dir= None)
 if __name__ == "__main__":
     main()

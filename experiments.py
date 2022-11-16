@@ -147,7 +147,7 @@ def propagate_best_strategies_network_100_times(T: int, N: int, brain_size: int,
 
     return game, stats
 
-def propagate_all_strategies_disconnected_network_10_100_times(T: int, N: int, brain_size: int, num_strategies: int, seed: int, time_step : List[int], fig_dir = None):
+def propagate_best_strategies_disconnected_network_10_100_times(T: int, N: int, brain_size: int, num_strategies: int, seed: int, time_step : List[int], fig_dir = None):
     np.random.seed(seed)
 
     stats = {
@@ -175,8 +175,8 @@ def propagate_all_strategies_disconnected_network_10_100_times(T: int, N: int, b
         stats[80].append([])
         stats[90].append([])
 
-    for i in range(5):
-        agents = [Agent(i, past_decisions= None, brain_size = brain_size, num_strategies= num_strategies) for i in range(N)]
+    for i in range(2):
+        agents = [Agent(i, past_decisions= None, brain_size = brain_size, num_strategies= num_strategies, aggregate_mode= "best") for i in range(N)]
         past_games = np.binary_repr(np.random.randint(0, 2**8), width = 8)         # Assume there is already 8 games played in the past
 
         game = Disconnected_Network_Minority_Game_10(T, N, agents, past_games = past_games, 
